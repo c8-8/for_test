@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>醫務管理師刷題 - 證照考試練習平台</title>
+  <style>
+    :root {
+      --background: #ffffff;
+      --foreground: #0a0a0a;
+      --card: #ffffff;
+      --card-foreground: #0a0a0a;
+      --primary: #2563eb;
+      --primary-foreground: #ffffff;
+      --secondary: #f5f5f5;
+      --secondary-foreground: #171717;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --success: #22c55e;
+      --success-foreground: #ffffff;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+      --warning: #eab308;
+      --radius: 0.75rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .header-content {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-icon {
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      background-color: rgba(37, 99, 235, 0.1);
+    }
+
+    .header-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--primary);
+    }
+
+    .header-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .header-subtitle {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background-color: var(--card);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--muted-foreground);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .nav-item:hover {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .nav-item.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .nav-item svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: -0.25rem;
+      right: -0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.25rem;
+      border-radius: 9999px;
+      background-color: var(--destructive);
+      color: var(--destructive-foreground);
+      font-size: 0.625rem;
+      font-weight: 700;
+    }
+
+    /* Main Content */
+    .main {
+      padding: 1.5rem 1rem 6rem;
+    }
+
+    /* Card */
+    .card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-header {
+      padding: 1rem 1rem 0.5rem;
+      text-align: center;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    /* Button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-ghost {
+      background: none;
+      color: var(--muted-foreground);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--secondary);
+      color: var(--foreground);
+    }
+
+    .btn-destructive {
+      background: none;
+      color: var(--destructive);
+    }
+
+    .btn-destructive:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    .btn-outline {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--foreground);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--secondary);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .btn-icon {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .badge-primary {
+      background-color: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .badge-secondary {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .badge-success {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .badge-warning {
+      background-color: rgba(234, 179, 8, 0.1);
+      color: #ca8a04;
+      border: 1px solid rgba(234, 179, 8, 0.2);
+    }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      width: 2.75rem;
+      height: 1.5rem;
+      background-color: var(--muted);
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .switch.active {
+      background-color: var(--primary);
+    }
+
+    .switch-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 1.25rem;
+      height: 1.25rem;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .switch.active .switch-thumb {
+      transform: translateX(1.25rem);
+    }
+
+    /* Bank Selector */
+    .bank-card {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .bank-card:hover {
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .bank-card:active {
+      transform: scale(0.99);
+    }
+
+    .bank-card-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .bank-icon {
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      background-color: rgba(37, 99, 235, 0.1);
+      flex-shrink: 0;
+    }
+
+    .bank-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--primary);
+    }
+
+    .bank-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .bank-name {
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    .bank-desc {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .bank-count {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+    }
+
+    .bank-arrow svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: var(--muted-foreground);
+    }
+
+    /* Question Card */
+    .question-card {
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .question-card:hover {
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .question-card.starred {
+      box-shadow: 0 0 0 2px var(--warning), 0 0 0 4px rgba(234, 179, 8, 0.2);
+    }
+
+    .question-card.bookmarked {
+      border: 2px solid #fbbf24;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .question-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .question-id {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.5rem;
+    }
+
+    .question-text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--foreground);
+      line-height: 1.6;
+    }
+
+    .question-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    .action-btn {
+      padding: 0.375rem;
+      border-radius: 50%;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--muted-foreground);
+    }
+
+    .action-btn:hover {
+      background-color: var(--secondary);
+    }
+
+    .action-btn:active {
+      transform: scale(0.9);
+    }
+
+    .action-btn.starred {
+      color: var(--warning);
+    }
+
+    .action-btn.bookmarked {
+      color: #f59e0b;
+    }
+
+    .action-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    /* Options */
+    .options {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      color: var(--muted-foreground);
+    }
+
+    .option.correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .option.correct .option-letter {
+      background-color: var(--success);
+      color: var(--success-foreground);
+    }
+
+    .option-text {
+      padding-top: 0.125rem;
+      flex: 1;
+    }
+
+    /* Quiz Options */
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 2px solid transparent;
+      background-color: rgba(245, 245, 245, 0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-option:hover {
+      background-color: var(--secondary);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--primary);
+      background-color: rgba(37, 99, 235, 0.1);
+    }
+
+    .quiz-option input {
+      margin-top: 0.125rem;
+      flex-shrink: 0;
+    }
+
+    .quiz-option-text {
+      font-size: 0.875rem;
+      color: var(--foreground);
+    }
+
+    /* Results */
+    .result-card {
+      text-align: center;
+    }
+
+    .result-icon {
+      width: 4rem;
+      height: 4rem;
+      margin: 0 auto 0.5rem;
+    }
+
+    .result-icon.success {
+      color: var(--success);
+    }
+
+    .result-icon.fail {
+      color: var(--destructive);
+    }
+
+    .result-score {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 1rem 0;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .result-item {
+      padding: 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .result-item.correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .result-item.wrong {
+      background-color: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .result-item-icon {
+      width: 2rem;
+      height: 2rem;
+      margin: 0 auto 0.25rem;
+    }
+
+    .result-item.correct .result-item-icon {
+      color: var(--success);
+    }
+
+    .result-item.wrong .result-item-icon {
+      color: var(--destructive);
+    }
+
+    .result-item-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .result-item.correct .result-item-value {
+      color: var(--success);
+    }
+
+    .result-item.wrong .result-item-value {
+      color: var(--destructive);
+    }
+
+    .result-item-label {
+      font-size: 0.75rem;
+    }
+
+    .result-item.correct .result-item-label {
+      color: var(--success);
+    }
+
+    .result-item.wrong .result-item-label {
+      color: var(--destructive);
+    }
+
+    /* Detail Card */
+    .detail-card {
+      margin-bottom: 1rem;
+    }
+
+    .detail-card.correct-border {
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    .detail-card.wrong-border {
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .detail-answer {
+      font-size: 0.875rem;
+      margin-top: 1rem;
+    }
+
+    .detail-answer b {
+      font-weight: 600;
+    }
+
+    .detail-answer.correct {
+      color: var(--success);
+    }
+
+    .detail-answer.wrong {
+      color: var(--destructive);
+    }
+
+    /* Session Card */
+    .session-card {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .session-card:hover {
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .session-card:active {
+      transform: scale(0.99);
+    }
+
+    .session-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .session-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .session-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.25rem;
+    }
+
+    .session-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .session-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .session-meta-item svg {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+
+    .session-stats {
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .session-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 4rem;
+      height: 4rem;
+      color: rgba(115, 115, 115, 0.3);
+      margin-bottom: 1rem;
+    }
+
+    .empty-title {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--foreground);
+    }
+
+    .empty-desc {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+    }
+
+    /* Filter Card */
+    .filter-card {
+      border-color: rgba(37, 99, 235, 0.2);
+    }
+
+    .filter-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .filter-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .filter-left svg {
+      width: 1rem;
+      height: 1rem;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .filter-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Jump Button */
+    .jump-container {
+      position: fixed;
+      bottom: 6rem;
+      left: 1rem;
+      z-index: 50;
+    }
+
+    .jump-btn {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .jump-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .jump-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .jump-menu {
+      position: absolute;
+      bottom: 3.5rem;
+      left: 0;
+      width: 8rem;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-height: 16rem;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .jump-menu.show {
+      display: block;
+    }
+
+    .jump-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--foreground);
+      text-align: left;
+    }
+
+    .jump-menu-item:hover {
+      background-color: var(--secondary);
+    }
+
+    .jump-menu-item svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .jump-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+    }
+
+    .jump-backdrop.show {
+      display: block;
+    }
+
+    /* Back Button */
+    .back-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .back-btn:hover {
+      background-color: var(--secondary);
+      color: var(--foreground);
+    }
+
+    .back-btn svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    /* Progress */
+    .progress-text {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 0.5rem;
+      background-color: var(--muted);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary);
+      transition: width 0.3s;
+    }
+
+    /* Utilities */
+    .text-center { text-align: center; }
+    .text-sm { font-size: 0.875rem; }
+    .text-xs { font-size: 0.75rem; }
+    .text-muted { color: var(--muted-foreground); }
+    .text-primary { color: var(--primary); }
+    .text-success { color: var(--success); }
+    .text-destructive { color: var(--destructive); }
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .pt-4 { padding-top: 1rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .hidden { display: none; }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 0.75rem;
+    }
+
+    .loading-icon {
+      width: 3rem;
+      height: 3rem;
+      color: var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .nav {
+        position: static;
+        border-top: none;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .nav-content {
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .nav-item {
+        flex-direction: row;
+        gap: 0.5rem;
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+      }
+
+      .main {
+        padding-bottom: 1.5rem;
+      }
+
+      .jump-container {
+        bottom: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- 引入外部題庫資料 (分開的題本 A 與 B) -->
+  <script src="./data-a.js"></script>
+  <script src="./data-b.js"></script>
+  <script>
+    // ===== UTILITY FUNCTIONS =====
+    // Fisher-Yates 洗牌演算法
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // 產生隨機測驗
+    function createRandomQuiz(bank, count = 50) {
+      const questions = bank === 'A' ? medicalManagementQuestions : legalInfoQuestions;
+      const shuffled = shuffleArray(questions);
+      return shuffled.slice(0, Math.min(count, shuffled.length));
+    }
+
+    // 產生測驗 ID (MMDDHHmm 格式)
+    function generateSessionId() {
+      const now = new Date();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      return `${month}${day}${hours}${minutes}`;
+    }
+
+    // 格式化時間戳記
+    function formatTimestamp(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleString('zh-TW', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // 根據 ID 取得題目
+    function getQuestionById(id, bank) {
+      const questions = bank === 'A' ? medicalManagementQuestions : legalInfoQuestions;
+      return questions.find(q => q.id === id);
+    }
+
+    // ===== LOCAL STORAGE =====
+    const STORAGE_KEYS = {
+      STARRED: 'quiz-starred',
+      BOOKMARK: 'quiz-bookmark',
+      SESSIONS: 'quiz-sessions'
+    };
+
+    function getStarred() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEYS.STARRED);
+        return data ? JSON.parse(data) : { A: [], B: [] };
+      } catch {
+        return { A: [], B: [] };
+      }
+    }
+
+    function saveStarred(starred) {
+      localStorage.setItem(STORAGE_KEYS.STARRED, JSON.stringify(starred));
+    }
+
+    function getBookmark() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEYS.BOOKMARK);
+        return data ? JSON.parse(data) : { A: null, B: null };
+      } catch {
+        return { A: null, B: null };
+      }
+    }
+
+    function saveBookmark(bookmark) {
+      localStorage.setItem(STORAGE_KEYS.BOOKMARK, JSON.stringify(bookmark));
+    }
+
+    function getSessions() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEYS.SESSIONS);
+        return data ? JSON.parse(data) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSessions(sessions) {
+      localStorage.setItem(STORAGE_KEYS.SESSIONS, JSON.stringify(sessions));
+    }
+
+    function saveQuizSession(session) {
+      const sessions = getSessions();
+      sessions.unshift(session);
+      saveSessions(sessions);
+    }
+
+    function deleteQuizSession(sessionId) {
+      const sessions = getSessions();
+      const filtered = sessions.filter(s => s.sessionId !== sessionId);
+      saveSessions(filtered);
+    }
+
+    function clearAllSessions() {
+      saveSessions([]);
+    }
+
+    // ===== ICONS =====
+    const icons = {
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+      list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+      play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+      alertCircle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+      bookA: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="m10 13 2-2 2 2"/><path d="M12 11v6"/></svg>',
+      bookB: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 10h6"/><path d="M9 14h6"/></svg>',
+      chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+      chevronLeft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+      star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+      starFilled: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+      sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>',
+      sunFilled: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>',
+      filter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>',
+      chevronsUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>',
+      chevronsDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>',
+      bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>',
+      trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+      checkCircle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      xCircle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      hash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>',
+      trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+      inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
+      menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>'
+    };
+
+    // ===== APP STATE =====
+    let state = {
+      currentView: 'list', // 'list', 'quiz', 'wrong'
+      listBank: null,
+      quizStage: 'select-bank', // 'select-bank', 'playing', 'finished'
+      quizBank: null,
+      quizQuestions: [],
+      quizAnswers: {},
+      quizScore: 0,
+      wrongViewMode: 'list', // 'list', 'detail'
+      wrongDetailSession: null,
+      starred: { A: [], B: [] },
+      bookmark: { A: null, B: null },
+      sessions: [],
+      showOnlyStarred: false,
+      jumpMenuOpen: false,
+      isLoading: true
+    };
+
+    // ===== RENDER FUNCTIONS =====
+    function render() {
+      const app = document.getElementById('app');
+      
+      if (state.isLoading) {
+        app.innerHTML = `
+          <div class="loading">
+            ${icons.activity.replace('<svg', '<svg class="loading-icon"')}
+            <p class="text-muted">載入中...</p>
+          </div>
+        `;
+        return;
+      }
+
+      app.innerHTML = `
+        ${renderHeader()}
+        <div class="container">
+          ${renderNav()}
+          <main class="main">
+            ${renderContent()}
+          </main>
+        </div>
+        ${state.currentView === 'list' && state.listBank ? renderJumpMenu() : ''}
+      `;
+
+      attachEventListeners();
+    }
+
+    function renderHeader() {
+      return `
+        <header class="header">
+          <div class="container">
+            <div class="header-content">
+              <div class="header-left">
+                <div class="header-icon">${icons.activity}</div>
+                <div>
+                  <h1 class="header-title">醫務管理師刷題</h1>
+                  <p class="header-subtitle">證照考試練習平台</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+      `;
+    }
+
+    function renderNav() {
+      const wrongCount = state.sessions.length;
+      return `
+        <nav class="nav">
+          <div class="nav-content">
+            <button class="nav-item ${state.currentView === 'list' ? 'active' : ''}" data-view="list">
+              ${icons.list}
+              <span>列表</span>
+            </button>
+            <button class="nav-item ${state.currentView === 'quiz' ? 'active' : ''}" data-view="quiz">
+              ${icons.play}
+              <span>測驗</span>
+            </button>
+            <button class="nav-item ${state.currentView === 'wrong' ? 'active' : ''}" data-view="wrong">
+              ${icons.alertCircle}
+              <span>錯題本</span>
+              ${wrongCount > 0 ? `<span class="nav-badge">${wrongCount > 99 ? '99+' : wrongCount}</span>` : ''}
+            </button>
+          </div>
+        </nav>
+      `;
+    }
+
+    function renderContent() {
+      switch (state.currentView) {
+        case 'list':
+          return state.listBank ? renderListView() : renderBankSelector('list');
+        case 'quiz':
+          return renderQuizMode();
+        case 'wrong':
+          return renderWrongAnswers();
+        default:
+          return '';
+      }
+    }
+
+    function renderBankSelector(mode) {
+      const title = mode === 'list' ? '選擇題本瀏覽' : '選擇題本測驗';
+      return `
+        <div class="space-y-4">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">${title}</h2>
+            </div>
+          </div>
+          <div class="card bank-card" data-bank="A" data-mode="${mode}">
+            <div class="card-content">
+              <div class="bank-card-content">
+                <div class="bank-icon">${icons.bookA}</div>
+                <div class="bank-info">
+                  <div class="bank-name">題本 A</div>
+                  <div class="bank-desc">醫務管理概論</div>
+                  <div class="bank-count">共 ${medicalManagementQuestions.length} 題</div>
+                </div>
+                <div class="bank-arrow">${icons.chevronRight}</div>
+              </div>
+            </div>
+          </div>
+          <div class="card bank-card" data-bank="B" data-mode="${mode}">
+            <div class="card-content">
+              <div class="bank-card-content">
+                <div class="bank-icon">${icons.bookB}</div>
+                <div class="bank-info">
+                  <div class="bank-name">題本 B</div>
+                  <div class="bank-desc">醫療法規與病歷資訊管理</div>
+                  <div class="bank-count">共 ${legalInfoQuestions.length} 題</div>
+                </div>
+                <div class="bank-arrow">${icons.chevronRight}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderListView() {
+      const questions = state.listBank === 'A' ? medicalManagementQuestions : legalInfoQuestions;
+      const starredIds = state.starred[state.listBank] || [];
+      const bookmarkId = state.bookmark[state.listBank];
+      
+      let filteredQuestions = questions;
+      if (state.showOnlyStarred) {
+        filteredQuestions = questions.filter(q => starredIds.includes(q.id));
+      }
+
+      const bankName = state.listBank === 'A' ? '醫務管理概論' : '醫療法規與病歷資訊管理';
+
+      return `
+        <div class="space-y-4">
+          <div class="back-header">
+            <button class="back-btn" data-action="back-list">
+              ${icons.chevronLeft}
+              <span>返回選擇</span>
+            </button>
+            <span class="badge badge-primary">題本 ${state.listBank}</span>
+          </div>
+
+          <div class="card filter-card">
+            <div class="card-content">
+              <div class="filter-content">
+                <div class="filter-left">
+                  ${icons.filter}
+                  <span class="text-sm">須注意 (${starredIds.length})</span>
+                </div>
+                <div class="filter-right">
+                  ${bookmarkId ? `<button class="btn btn-ghost btn-sm" data-action="goto-bookmark">跳至書籤</button>` : ''}
+                  <div class="switch ${state.showOnlyStarred ? 'active' : ''}" data-action="toggle-filter">
+                    <div class="switch-thumb"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3" id="question-list">
+            ${filteredQuestions.map(q => renderQuestionCard(q, starredIds.includes(q.id), bookmarkId === q.id)).join('')}
+          </div>
+
+          ${filteredQuestions.length === 0 ? `
+            <div class="empty-state">
+              ${icons.star.replace('<svg', '<svg class="empty-icon"')}
+              <p class="empty-title">沒有標記的題目</p>
+              <p class="empty-desc">長按題目可以加入星號標記</p>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function renderQuestionCard(question, isStarred, isBookmarked) {
+      const cardClasses = ['card', 'question-card'];
+      if (isStarred) cardClasses.push('starred');
+      if (isBookmarked) cardClasses.push('bookmarked');
+
+      return `
+        <div class="${cardClasses.join(' ')}" data-question-id="${question.id}" id="question-${question.id}">
+          <div class="card-content">
+            <div class="question-header">
+              <div class="question-content">
+                <div class="question-id">#${question.id}</div>
+                <div class="question-text">${question.question}</div>
+              </div>
+              <div class="question-actions">
+                <button class="action-btn ${isStarred ? 'starred' : ''}" data-action="toggle-star" data-id="${question.id}">
+                  ${isStarred ? icons.starFilled : icons.star}
+                </button>
+                <button class="action-btn ${isBookmarked ? 'bookmarked' : ''}" data-action="toggle-bookmark" data-id="${question.id}">
+                  ${isBookmarked ? icons.sunFilled : icons.sun}
+                </button>
+              </div>
+            </div>
+            <div class="options">
+              ${['A', 'B', 'C', 'D'].map(letter => `
+                <div class="option ${question.answer === letter ? 'correct' : ''}">
+                  <span class="option-letter">${letter}</span>
+                  <span class="option-text">${question.options[letter]}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderJumpMenu() {
+      const questions = state.listBank === 'A' ? medicalManagementQuestions : legalInfoQuestions;
+      const total = questions.length;
+      const ranges = [];
+      for (let i = 0; i < total; i += 100) {
+        const end = Math.min(i + 99, total - 1);
+        ranges.push({ start: i + 1, end: end + 1, firstId: questions[i].id });
+      }
+
+      return `
+        <div class="jump-backdrop ${state.jumpMenuOpen ? 'show' : ''}" data-action="close-jump"></div>
+        <div class="jump-container">
+          <div class="jump-menu ${state.jumpMenuOpen ? 'show' : ''}">
+            <button class="jump-menu-item" data-action="jump-top">
+              ${icons.chevronsUp}
+              <span>頁首</span>
+            </button>
+            ${ranges.map(r => `
+              <button class="jump-menu-item" data-action="jump-to" data-id="${r.firstId}">
+                ${icons.hash}
+                <span>${r.start}-${r.end}</span>
+              </button>
+            `).join('')}
+            <button class="jump-menu-item" data-action="jump-bottom">
+              ${icons.chevronsDown}
+              <span>頁尾</span>
+            </button>
+          </div>
+          <button class="jump-btn" data-action="toggle-jump">
+            ${icons.menu}
+          </button>
+        </div>
+      `;
+    }
+
+    function renderQuizMode() {
+      switch (state.quizStage) {
+        case 'select-bank':
+          return renderBankSelector('quiz');
+        case 'playing':
+          return renderQuizPlaying();
+        case 'finished':
+          return renderQuizFinished();
+        default:
+          return '';
+      }
+    }
+
+    function renderQuizPlaying() {
+      const total = state.quizQuestions.length;
+      const answered = Object.keys(state.quizAnswers).length;
+      const progress = (answered / total) * 100;
+
+      return `
+        <div class="space-y-4">
+          <div class="back-header">
+            <button class="back-btn" data-action="back-quiz">
+              ${icons.chevronLeft}
+              <span>放棄測驗</span>
+            </button>
+            <span class="badge badge-primary">題本 ${state.quizBank}</span>
+          </div>
+
+          <div class="progress-text">作答進度: ${answered} / ${total}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${progress}%"></div>
+          </div>
+
+          <div class="space-y-4">
+            ${state.quizQuestions.map((q, idx) => renderQuizQuestion(q, idx)).join('')}
+          </div>
+
+          <button class="btn btn-primary btn-lg btn-full mt-4" data-action="submit-quiz" ${answered < total ? 'disabled' : ''}>
+            完成並交卷 (${answered}/${total})
+          </button>
+        </div>
+      `;
+    }
+
+    function renderQuizQuestion(question, index) {
+      const selectedAnswer = state.quizAnswers[question.id];
+      return `
+        <div class="card" id="quiz-q-${question.id}">
+          <div class="card-content">
+            <div class="question-id">第 ${index + 1} 題</div>
+            <div class="question-text mb-4">${question.question}</div>
+            <div class="space-y-2">
+              ${['A', 'B', 'C', 'D'].map(letter => `
+                <label class="quiz-option ${selectedAnswer === letter ? 'selected' : ''}" data-question="${question.id}" data-answer="${letter}">
+                  <input type="radio" name="q-${question.id}" value="${letter}" ${selectedAnswer === letter ? 'checked' : ''}>
+                  <span class="quiz-option-text"><b>${letter}.</b> ${question.options[letter]}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderQuizFinished() {
+      const total = state.quizQuestions.length;
+      const correctCount = state.quizQuestions.filter(q => state.quizAnswers[q.id] === q.answer).length;
+      const wrongCount = total - correctCount;
+      const score = Math.round((correctCount / total) * 100);
+      const passed = score >= 60;
+
+      return `
+        <div class="space-y-4">
+          <div class="card result-card">
+            <div class="card-content">
+              <div class="result-icon ${passed ? 'success' : 'fail'}">
+                ${passed ? icons.trophy : icons.alertCircle}
+              </div>
+              <h2 class="card-title">${passed ? '恭喜通過！' : '繼續加油！'}</h2>
+              <div class="result-score">${score} 分</div>
+              <div class="result-grid">
+                <div class="result-item correct">
+                  <div class="result-item-icon">${icons.checkCircle}</div>
+                  <div class="result-item-value">${correctCount}</div>
+                  <div class="result-item-label">答對</div>
+                </div>
+                <div class="result-item wrong">
+                  <div class="result-item-icon">${icons.xCircle}</div>
+                  <div class="result-item-value">${wrongCount}</div>
+                  <div class="result-item-label">答錯</div>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-full" data-action="new-quiz">
+                再次測驗
+              </button>
+            </div>
+          </div>
+
+          <h3 class="font-semibold">題目詳解</h3>
+          <div class="space-y-3">
+            ${state.quizQuestions.map((q, idx) => renderDetailCard(q, idx)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDetailCard(question, index) {
+      const userAnswer = state.quizAnswers[question.id];
+      const isCorrect = userAnswer === question.answer;
+      
+      return `
+        <div class="card detail-card ${isCorrect ? 'correct-border' : 'wrong-border'}">
+          <div class="card-content">
+            <div class="question-id">第 ${index + 1} 題 #${question.id}</div>
+            <div class="question-text">${question.question}</div>
+            <div class="options">
+              ${['A', 'B', 'C', 'D'].map(letter => `
+                <div class="option ${question.answer === letter ? 'correct' : ''}">
+                  <span class="option-letter">${letter}</span>
+                  <span class="option-text">${question.options[letter]}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="detail-answer ${isCorrect ? 'correct' : 'wrong'}">
+              ${isCorrect 
+                ? `<b>正確！</b> 您的答案: ${userAnswer}`
+                : `<b>錯誤</b> 您的答案: ${userAnswer || '未作答'} / 正確答案: ${question.answer}`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWrongAnswers() {
+      if (state.wrongViewMode === 'detail' && state.wrongDetailSession) {
+        return renderWrongDetail();
+      }
+      return renderWrongList();
+    }
+
+    function renderWrongList() {
+      if (state.sessions.length === 0) {
+        return `
+          <div class="empty-state">
+            ${icons.inbox.replace('<svg', '<svg class="empty-icon"')}
+            <p class="empty-title">目前沒有測驗紀錄</p>
+            <p class="empty-desc">完成測驗後，錯題會自動記錄在這裡</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">測驗紀錄 (${state.sessions.length})</h2>
+            <button class="btn btn-destructive btn-sm" data-action="clear-all-sessions">
+              ${icons.trash}
+              清除全部
+            </button>
+          </div>
+          <div class="space-y-3">
+            ${state.sessions.map(session => renderSessionCard(session)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSessionCard(session) {
+      const wrongCount = session.wrongQuestionIds.length;
+      const passed = session.score >= 60;
+
+      return `
+        <div class="card session-card" data-session-id="${session.sessionId}">
+          <div class="card-content">
+            <div class="session-content">
+              <div class="session-info" data-action="view-session" data-session-id="${session.sessionId}">
+                <div class="session-badges">
+                  <span class="badge badge-primary">${session.sessionId}</span>
+                  <span class="badge badge-secondary">題本 ${session.bank}</span>
+                  <span class="badge ${passed ? 'badge-success' : 'badge-warning'}">${session.score}分</span>
+                </div>
+                <div class="session-meta">
+                  <span class="session-meta-item">
+                    ${icons.clock}
+                    ${formatTimestamp(session.timestamp)}
+                  </span>
+                </div>
+                <div class="session-stats">
+                  錯誤: <span class="text-destructive font-semibold">${wrongCount}</span> / ${session.totalQuestions} 題
+                </div>
+              </div>
+              <div class="session-actions">
+                <button class="btn btn-ghost btn-icon" data-action="delete-session" data-session-id="${session.sessionId}">
+                  ${icons.trash}
+                </button>
+                <span class="text-muted">${icons.chevronRight}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWrongDetail() {
+      const session = state.wrongDetailSession;
+      const wrongQuestions = session.wrongQuestionIds
+        .map(id => getQuestionById(id, session.bank))
+        .filter(q => q);
+
+      return `
+        <div class="space-y-4">
+          <div class="back-header">
+            <button class="back-btn" data-action="back-wrong">
+              ${icons.chevronLeft}
+              <span>返回列表</span>
+            </button>
+            <span class="badge badge-primary">${session.sessionId}</span>
+          </div>
+
+          <div class="card">
+            <div class="card-content">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-semibold">測驗: ${session.sessionId}</div>
+                  <div class="text-sm text-muted">題本 ${session.bank} · ${formatTimestamp(session.timestamp)}</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-bold text-lg ${session.score >= 60 ? 'text-success' : 'text-destructive'}">${session.score} 分</div>
+                  <div class="text-sm text-muted">錯誤 ${wrongQuestions.length} 題</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="font-semibold">錯誤題目詳解</h3>
+          <div class="space-y-3">
+            ${wrongQuestions.map((q, idx) => `
+              <div class="card detail-card wrong-border">
+                <div class="card-content">
+                  <div class="question-id">#${q.id}</div>
+                  <div class="question-text">${q.question}</div>
+                  <div class="options">
+                    ${['A', 'B', 'C', 'D'].map(letter => `
+                      <div class="option ${q.answer === letter ? 'correct' : ''}">
+                        <span class="option-letter">${letter}</span>
+                        <span class="option-text">${q.options[letter]}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ===== EVENT HANDLERS =====
+    function attachEventListeners() {
+      // Navigation
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const view = btn.dataset.view;
+          state.currentView = view;
+          if (view === 'list') {
+            state.listBank = null;
+          }
+          if (view === 'quiz') {
+            state.quizStage = 'select-bank';
+            state.quizBank = null;
+            state.quizQuestions = [];
+            state.quizAnswers = {};
+          }
+          if (view === 'wrong') {
+            state.wrongViewMode = 'list';
+            state.wrongDetailSession = null;
+          }
+          render();
+        });
+      });
+
+      // Bank selector
+      document.querySelectorAll('.bank-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const bank = card.dataset.bank;
+          const mode = card.dataset.mode;
+          if (mode === 'list') {
+            state.listBank = bank;
+          } else if (mode === 'quiz') {
+            state.quizBank = bank;
+            state.quizQuestions = createRandomQuiz(bank, 50);
+            state.quizAnswers = {};
+            state.quizStage = 'playing';
+          }
+          render();
+        });
+      });
+
+      // Back buttons
+      document.querySelectorAll('[data-action="back-list"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.listBank = null;
+          render();
+        });
+      });
+
+      document.querySelectorAll('[data-action="back-quiz"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (confirm('確定要放棄本次測驗嗎？')) {
+            state.quizStage = 'select-bank';
+            state.quizBank = null;
+            state.quizQuestions = [];
+            state.quizAnswers = {};
+            render();
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-action="back-wrong"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.wrongViewMode = 'list';
+          state.wrongDetailSession = null;
+          render();
+        });
+      });
+
+      // Toggle filter
+      document.querySelectorAll('[data-action="toggle-filter"]').forEach(el => {
+        el.addEventListener('click', () => {
+          state.showOnlyStarred = !state.showOnlyStarred;
+          render();
+        });
+      });
+
+      // Star toggle
+      document.querySelectorAll('[data-action="toggle-star"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(btn.dataset.id);
+          const bank = state.listBank;
+          const starred = state.starred[bank] || [];
+          if (starred.includes(id)) {
+            state.starred[bank] = starred.filter(i => i !== id);
+          } else {
+            state.starred[bank] = [...starred, id];
+          }
+          saveStarred(state.starred);
+          render();
+        });
+      });
+
+      // Bookmark toggle
+      document.querySelectorAll('[data-action="toggle-bookmark"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(btn.dataset.id);
+          const bank = state.listBank;
+          if (state.bookmark[bank] === id) {
+            state.bookmark[bank] = null;
+          } else {
+            state.bookmark[bank] = id;
+          }
+          saveBookmark(state.bookmark);
+          render();
+        });
+      });
+
+      // Goto bookmark
+      document.querySelectorAll('[data-action="goto-bookmark"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const bookmarkId = state.bookmark[state.listBank];
+          if (bookmarkId) {
+            const el = document.getElementById(`question-${bookmarkId}`);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        });
+      });
+
+      // Jump menu
+      document.querySelectorAll('[data-action="toggle-jump"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.jumpMenuOpen = !state.jumpMenuOpen;
+          render();
+        });
+      });
+
+      document.querySelectorAll('[data-action="close-jump"]').forEach(el => {
+        el.addEventListener('click', () => {
+          state.jumpMenuOpen = false;
+          render();
+        });
+      });
+
+      document.querySelectorAll('[data-action="jump-top"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          state.jumpMenuOpen = false;
+          render();
+        });
+      });
+
+      document.querySelectorAll('[data-action="jump-bottom"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+          state.jumpMenuOpen = false;
+          render();
+        });
+      });
+
+      document.querySelectorAll('[data-action="jump-to"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.id;
+          const el = document.getElementById(`question-${id}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          state.jumpMenuOpen = false;
+          render();
+        });
+      });
+
+      // Quiz options
+      document.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const questionId = parseInt(opt.dataset.question);
+          const answer = opt.dataset.answer;
+          state.quizAnswers[questionId] = answer;
+          render();
+        });
+      });
+
+      // Submit quiz
+      document.querySelectorAll('[data-action="submit-quiz"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const total = state.quizQuestions.length;
+          const answered = Object.keys(state.quizAnswers).length;
+          if (answered < total) return;
+
+          const correctCount = state.quizQuestions.filter(q => state.quizAnswers[q.id] === q.answer).length;
+          const score = Math.round((correctCount / total) * 100);
+          state.quizScore = score;
+
+          // Save wrong answers
+          const wrongIds = state.quizQuestions
+            .filter(q => state.quizAnswers[q.id] !== q.answer)
+            .map(q => q.id);
+
+          if (wrongIds.length > 0) {
+            const session = {
+              sessionId: generateSessionId(),
+              timestamp: Date.now(),
+              wrongQuestionIds: wrongIds,
+              bank: state.quizBank,
+              score: score,
+              totalQuestions: total
+            };
+            saveQuizSession(session);
+            state.sessions = getSessions();
+          }
+
+          state.quizStage = 'finished';
+          render();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+
+      // New quiz
+      document.querySelectorAll('[data-action="new-quiz"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.quizStage = 'select-bank';
+          state.quizBank = null;
+          state.quizQuestions = [];
+          state.quizAnswers = {};
+          render();
+        });
+      });
+
+      // View session
+      document.querySelectorAll('[data-action="view-session"]').forEach(el => {
+        el.addEventListener('click', () => {
+          const sessionId = el.dataset.sessionId;
+          const session = state.sessions.find(s => s.sessionId === sessionId);
+          if (session) {
+            state.wrongViewMode = 'detail';
+            state.wrongDetailSession = session;
+            render();
+          }
+        });
+      });
+
+      // Delete session
+      document.querySelectorAll('[data-action="delete-session"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const sessionId = btn.dataset.sessionId;
+          if (confirm('確定要刪除此測驗紀錄嗎？')) {
+            deleteQuizSession(sessionId);
+            state.sessions = getSessions();
+            render();
+          }
+        });
+      });
+
+      // Clear all sessions
+      document.querySelectorAll('[data-action="clear-all-sessions"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (confirm('確定要清除所有測驗紀錄嗎？此操作無法復原。')) {
+            clearAllSessions();
+            state.sessions = [];
+            render();
+          }
+        });
+      });
+
+      // Long press for star (on question cards)
+      document.querySelectorAll('.question-card').forEach(card => {
+        let pressTimer;
+        const questionId = parseInt(card.dataset.questionId);
+        
+        card.addEventListener('touchstart', (e) => {
+          pressTimer = setTimeout(() => {
+            const bank = state.listBank;
+            const starred = state.starred[bank] || [];
+            if (starred.includes(questionId)) {
+              state.starred[bank] = starred.filter(i => i !== questionId);
+            } else {
+              state.starred[bank] = [...starred, questionId];
+            }
+            saveStarred(state.starred);
+            render();
+          }, 500);
+        });
+
+        card.addEventListener('touchend', () => {
+          clearTimeout(pressTimer);
+        });
+
+        card.addEventListener('touchmove', () => {
+          clearTimeout(pressTimer);
+        });
+      });
+    }
+
+    // ===== INIT =====
+    function init() {
+      state.starred = getStarred();
+      state.bookmark = getBookmark();
+      state.sessions = getSessions();
+      state.isLoading = false;
+      render();
+    }
+
+    // Start the app
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
